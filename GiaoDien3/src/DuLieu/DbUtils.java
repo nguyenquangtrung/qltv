@@ -20,6 +20,7 @@ import javax.swing.table.TableModel;
  *
  * @author trung
  *///asdfasdfsdf
+//davao
 public class DbUtils {
    
          public static TableModel resultSetToTableModel(ResultSet rs) {
