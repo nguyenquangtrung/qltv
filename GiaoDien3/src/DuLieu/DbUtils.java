@@ -21,6 +21,7 @@ import javax.swing.table.TableModel;
  * @author trung
  *///asdfasdfsdf
 //davao
+//doan code nay la mot doan code de xoa
 public class DbUtils {
    
          public static TableModel resultSetToTableModel(ResultSet rs) {
