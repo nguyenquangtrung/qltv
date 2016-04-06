@@ -86,7 +86,7 @@ public class Nen extends javax.swing.JPanel {
         jLabel9.setFont(new java.awt.Font("Tahoma", 1, 14)); // NOI18N
         jLabel9.setForeground(new java.awt.Color(255, 255, 255));
         jLabel9.setText("Nam");
-        add(jLabel9, new org.netbeans.lib.awtextra.AbsoluteConstraints(330, 290, 132, -1));
+        add(jLabel9, new org.netbeans.lib.awtextra.AbsoluteConstraints(330, 300, 132, -1));
 
         jLabel11.setIcon(new javax.swing.ImageIcon("E:\\yeu\\hoanhtrangthuvien.jpg")); // NOI18N
         jLabel11.setText("jLabel11");

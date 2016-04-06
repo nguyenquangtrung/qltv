@@ -5,7 +5,12 @@
  */
 package giaodien;
 
+import DuLieu.DangNhapAdmin;
+import DuLieu.DocGiaData;
+import Object.Admin;
+import Object.DocGia;
 import java.awt.Color;
+import javax.swing.JOptionPane;
 
 /**
  *
@@ -16,6 +21,8 @@ public class Login extends javax.swing.JFrame {
     /**
      * Creates new form Login
      */
+    DangNhapAdmin dnad=new DangNhapAdmin();
+    DocGiaData dgdt=new DocGiaData();
     public Login() {
         initComponents();
         this.getContentPane().setBackground(Color.cyan);
@@ -32,9 +39,9 @@ public class Login extends javax.swing.JFrame {
 
         jPanel1 = new javax.swing.JPanel();
         jLabel1 = new javax.swing.JLabel();
-        jTextField1 = new javax.swing.JTextField();
+        txt_matkhau = new javax.swing.JTextField();
         jLabel2 = new javax.swing.JLabel();
-        jTextField2 = new javax.swing.JTextField();
+        txt_taikhoan = new javax.swing.JTextField();
         jButton1 = new javax.swing.JButton();
         jButton2 = new javax.swing.JButton();
         jLabel3 = new javax.swing.JLabel();
@@ -53,6 +60,11 @@ public class Login extends javax.swing.JFrame {
         jButton1.setBackground(new java.awt.Color(0, 153, 153));
         jButton1.setIcon(new javax.swing.ImageIcon("E:\\yeu\\image\\login.png")); // NOI18N
         jButton1.setText("Đăng Nhập");
+        jButton1.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jButton1ActionPerformed(evt);
+            }
+        });
 
         jButton2.setBackground(new java.awt.Color(0, 153, 153));
         jButton2.setIcon(new javax.swing.ImageIcon("E:\\yeu\\image\\huybo.png")); // NOI18N
@@ -68,7 +80,7 @@ public class Login extends javax.swing.JFrame {
                         .addContainerGap(19, Short.MAX_VALUE)
                         .addComponent(jLabel1)
                         .addGap(18, 18, 18)
-                        .addComponent(jTextField2, javax.swing.GroupLayout.PREFERRED_SIZE, 176, javax.swing.GroupLayout.PREFERRED_SIZE))
+                        .addComponent(txt_taikhoan, javax.swing.GroupLayout.PREFERRED_SIZE, 176, javax.swing.GroupLayout.PREFERRED_SIZE))
                     .addGroup(jPanel1Layout.createSequentialGroup()
                         .addGap(0, 0, Short.MAX_VALUE)
                         .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -76,7 +88,7 @@ public class Login extends javax.swing.JFrame {
                             .addGroup(jPanel1Layout.createSequentialGroup()
                                 .addComponent(jLabel2)
                                 .addGap(18, 18, 18)
-                                .addComponent(jTextField1, javax.swing.GroupLayout.PREFERRED_SIZE, 176, javax.swing.GroupLayout.PREFERRED_SIZE)))))
+                                .addComponent(txt_matkhau, javax.swing.GroupLayout.PREFERRED_SIZE, 176, javax.swing.GroupLayout.PREFERRED_SIZE)))))
                 .addGap(19, 19, 19))
             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel1Layout.createSequentialGroup()
                 .addGap(0, 0, Short.MAX_VALUE)
@@ -89,10 +101,10 @@ public class Login extends javax.swing.JFrame {
                 .addGap(38, 38, 38)
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jLabel1)
-                    .addComponent(jTextField2, javax.swing.GroupLayout.PREFERRED_SIZE, 31, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addComponent(txt_taikhoan, javax.swing.GroupLayout.PREFERRED_SIZE, 31, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addGap(18, 18, 18)
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(jTextField1, javax.swing.GroupLayout.PREFERRED_SIZE, 31, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(txt_matkhau, javax.swing.GroupLayout.PREFERRED_SIZE, 31, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(jLabel2))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 40, Short.MAX_VALUE)
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
@@ -129,6 +141,28 @@ public class Login extends javax.swing.JFrame {
 
         pack();
     }// </editor-fold>//GEN-END:initComponents
+
+    private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
+       String taikhoan=txt_taikhoan.getText();
+       String matkhau=txt_matkhau.getText();
+       Admin ad= dnad.laythongtin(taikhoan, matkhau);
+        DocGia dg=dgdt.dangnhap(taikhoan, matkhau);
+       if(ad !=null){
+           this.dispose();
+          NewJFrame newj=new NewJFrame();
+          newj.setVisible(true);
+          NewJFrame.hienthi.setText(ad.getName());
+           
+       }
+       else if(dg != null){
+           this.dispose();
+           NguoiDung nd =new NguoiDung();
+           nd.setVisible(true);
+           NguoiDung.lbdg.setText(dg.getTendg());
+       }
+       else
+           JOptionPane.showMessageDialog(this, "Tai Khoan Hoac Mat Khau Chua Dung");
+    }//GEN-LAST:event_jButton1ActionPerformed
 
     /**
      * @param args the command line arguments
@@ -172,7 +206,7 @@ public class Login extends javax.swing.JFrame {
     private javax.swing.JLabel jLabel2;
     private javax.swing.JLabel jLabel3;
     private javax.swing.JPanel jPanel1;
-    private javax.swing.JTextField jTextField1;
-    private javax.swing.JTextField jTextField2;
+    private javax.swing.JTextField txt_matkhau;
+    private javax.swing.JTextField txt_taikhoan;
     // End of variables declaration//GEN-END:variables
 }

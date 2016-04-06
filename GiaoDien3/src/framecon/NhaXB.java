@@ -9,6 +9,7 @@ import DuLieu.DbUtils;
 import DuLieu.NhaXuatBanData;
 import DuLieu.Regex;
 import Object.NhaXuatBan;
+import giaodien.NewJFrame;
 import java.awt.Color;
 import java.sql.ResultSet;
 import java.sql.SQLException;
@@ -18,14 +19,14 @@ import javax.swing.JOptionPane;
  *
  * @author trung
  */
-public class nxb extends javax.swing.JPanel {
+public class NhaXB extends javax.swing.JPanel {
 
     /**
      * Creates new form nxb
      */
     NhaXuatBanData nxbdt = new NhaXuatBanData();
 
-    public nxb() {
+    public NhaXB() {
         initComponents();
         this.setBackground(Color.CYAN);
         CapNhat();
@@ -293,13 +294,13 @@ public class nxb extends javax.swing.JPanel {
             if (!Regex.checkphone(phonenxb)) 
                 JOptionPane.showMessageDialog(this, "Phone Khong Hop Le");
             
-            NhaXuatBan nxb = new NhaXuatBan(ma, tennxb, diachinxb, phonenxb, emailnxb);
+            NhaXuatBan nxb1 = new NhaXuatBan(ma, tennxb, diachinxb, phonenxb, emailnxb);
             if (Regex.validate(emailnxb) && Regex.checkphone(phonenxb)) 
                 if (nxbdt.KiemTraMaNXB(ma)) {
-                    boolean f = nxbdt.ThemNXB(nxb);
+                    boolean f = nxbdt.ThemNXB(nxb1);
                     if (f) 
                         JOptionPane.showMessageDialog(this, "Thêm Nhà Xuât Bản Thành Công");
-                    
+                        pane1.cb_tennxb.addItem(tennxb);
 
                 } else 
                     JOptionPane.showMessageDialog(this, "Trung ma");

@@ -105,5 +105,22 @@ public class DocGiaData {
         }
         return rs;
     }
-    
+    //ham thong tin dang nhap cua doc gia
+    public DocGia dangnhap(String ma,String pass){
+        DocGia dg = null;
+        try {
+            call = kn.getConnection().prepareCall("{call dangnhapdocgia(?,?)}");
+            call.setString(1, ma);
+            call.setString(2, pass);
+            rs = call.executeQuery();
+            while (rs.next()) {
+                dg = new DocGia();
+                dg.setTendg(rs.getString(3));
+            }
+
+        } catch (SQLException ex) {
+            Logger.getLogger(DocGiaData.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        return dg;
+    }
 }
