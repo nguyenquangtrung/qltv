@@ -5,22 +5,46 @@
  */
 package framecon;
 
+import DuLieu.DbUtils;
+import DuLieu.MuonData;
+import DuLieu.Regex;
+import Object.Muon;
+import Object.MuonChiTiet;
 import java.awt.Color;
+import java.sql.Date;
+import java.sql.ResultSet;
+import java.sql.SQLException;
+import java.util.logging.Level;
+import java.util.logging.Logger;
+import javax.swing.JOptionPane;
 
 /**
  *
  * @author trung
  */
-public class Muon extends javax.swing.JPanel {
+public class MuonSach extends javax.swing.JPanel {
 
     /**
      * Creates new form Muon
      */
-    public Muon() {
+    
+    MuonData mdt=new MuonData();
+    public MuonSach() {
         initComponents();
         this.setBackground(Color.CYAN);
+        TTbangMuon();
+        showMuonChiTiet();
     }
-
+      //Hirn thi thong tin bang muon
+    public void TTbangMuon(){
+        ResultSet rs=mdt.HienThiMuon();
+        tablemuon.setModel(DbUtils.resultSetToTableModel(rs));
+    }
+    //hirn thi bang muon ChiTiet
+    public void showMuonChiTiet(){
+        ResultSet rs=mdt.TTMuonCT();
+        tablemuonchitiet.setModel(DbUtils.resultSetToTableModel(rs));
+    }
     /**
      * This method is called from within the constructor to initialize the form.
      * WARNING: Do NOT modify this code. The content of this method is always
@@ -32,19 +56,19 @@ public class Muon extends javax.swing.JPanel {
 
         jPanel1 = new javax.swing.JPanel();
         jLabel1 = new javax.swing.JLabel();
-        jTextField1 = new javax.swing.JTextField();
+        txt_phieumuon = new javax.swing.JTextField();
         jLabel2 = new javax.swing.JLabel();
-        jTextField2 = new javax.swing.JTextField();
+        txt_manv = new javax.swing.JTextField();
         jLabel3 = new javax.swing.JLabel();
-        jTextField3 = new javax.swing.JTextField();
+        txt_madg = new javax.swing.JTextField();
         jLabel4 = new javax.swing.JLabel();
-        jTextField4 = new javax.swing.JTextField();
+        txt_ngaymuon = new javax.swing.JTextField();
         jLabel5 = new javax.swing.JLabel();
-        jTextField5 = new javax.swing.JTextField();
+        txt_ngayhen = new javax.swing.JTextField();
         jScrollPane1 = new javax.swing.JScrollPane();
-        jTable1 = new javax.swing.JTable();
+        tablemuon = new javax.swing.JTable();
         jScrollPane2 = new javax.swing.JScrollPane();
-        jTable2 = new javax.swing.JTable();
+        tablemuonchitiet = new javax.swing.JTable();
         jPanel2 = new javax.swing.JPanel();
         jButton1 = new javax.swing.JButton();
         jButton2 = new javax.swing.JButton();
@@ -55,8 +79,8 @@ public class Muon extends javax.swing.JPanel {
         jPanel3 = new javax.swing.JPanel();
         jLabel6 = new javax.swing.JLabel();
         jLabel7 = new javax.swing.JLabel();
-        jTextField6 = new javax.swing.JTextField();
-        jTextField7 = new javax.swing.JTextField();
+        txt_mpchitiet = new javax.swing.JTextField();
+        txt_serisach = new javax.swing.JTextField();
         jButton7 = new javax.swing.JButton();
         jButton8 = new javax.swing.JButton();
 
@@ -67,11 +91,17 @@ public class Muon extends javax.swing.JPanel {
 
         jLabel2.setText("Mã Nhan Viên");
 
+        txt_manv.addKeyListener(new java.awt.event.KeyAdapter() {
+            public void keyReleased(java.awt.event.KeyEvent evt) {
+                txt_manvKeyReleased(evt);
+            }
+        });
+
         jLabel3.setText("Mã Đọc Giả");
 
         jLabel4.setText("Ngày Mượn");
 
-        jLabel5.setText("Ngày Trả");
+        jLabel5.setText("Ngày Hẹn");
 
         javax.swing.GroupLayout jPanel1Layout = new javax.swing.GroupLayout(jPanel1);
         jPanel1.setLayout(jPanel1Layout);
@@ -85,43 +115,44 @@ public class Muon extends javax.swing.JPanel {
                     .addComponent(jLabel5))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                    .addComponent(jTextField1)
-                    .addComponent(jTextField3)
-                    .addComponent(jTextField5, javax.swing.GroupLayout.DEFAULT_SIZE, 196, Short.MAX_VALUE))
+                    .addComponent(txt_phieumuon)
+                    .addComponent(txt_madg)
+                    .addComponent(txt_ngayhen, javax.swing.GroupLayout.DEFAULT_SIZE, 196, Short.MAX_VALUE))
                 .addGap(172, 172, 172)
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addComponent(jLabel2)
                     .addComponent(jLabel4))
                 .addGap(18, 18, 18)
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                    .addComponent(jTextField2)
-                    .addComponent(jTextField4, javax.swing.GroupLayout.DEFAULT_SIZE, 184, Short.MAX_VALUE))
+                    .addComponent(txt_manv)
+                    .addComponent(txt_ngaymuon, javax.swing.GroupLayout.DEFAULT_SIZE, 184, Short.MAX_VALUE))
                 .addContainerGap(63, Short.MAX_VALUE))
         );
         jPanel1Layout.setVerticalGroup(
             jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(jPanel1Layout.createSequentialGroup()
                 .addGap(24, 24, 24)
-                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE, false)
-                    .addComponent(jLabel1, javax.swing.GroupLayout.PREFERRED_SIZE, 23, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(jLabel2)
-                    .addComponent(jTextField1, javax.swing.GroupLayout.PREFERRED_SIZE, 23, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(jTextField2))
+                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                    .addComponent(txt_phieumuon, javax.swing.GroupLayout.PREFERRED_SIZE, 23, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(txt_manv)
+                    .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                        .addComponent(jLabel1, javax.swing.GroupLayout.PREFERRED_SIZE, 23, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addComponent(jLabel2)))
                 .addGap(18, 18, 18)
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jLabel4)
-                    .addComponent(jTextField4, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(jTextField3, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(txt_ngaymuon, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(txt_madg, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(jLabel3))
                 .addGap(18, 18, 18)
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(jTextField5, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(txt_ngayhen, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(jLabel5))
                 .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
 
-        jTable1.setBackground(new java.awt.Color(255, 255, 153));
-        jTable1.setModel(new javax.swing.table.DefaultTableModel(
+        tablemuon.setBackground(new java.awt.Color(255, 255, 153));
+        tablemuon.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {
                 {null, null, null, null},
                 {null, null, null, null},
@@ -132,10 +163,15 @@ public class Muon extends javax.swing.JPanel {
                 "Title 1", "Title 2", "Title 3", "Title 4"
             }
         ));
-        jScrollPane1.setViewportView(jTable1);
+        tablemuon.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                tablemuonMouseClicked(evt);
+            }
+        });
+        jScrollPane1.setViewportView(tablemuon);
 
-        jTable2.setBackground(new java.awt.Color(255, 255, 153));
-        jTable2.setModel(new javax.swing.table.DefaultTableModel(
+        tablemuonchitiet.setBackground(new java.awt.Color(255, 255, 153));
+        tablemuonchitiet.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {
                 {null, null, null, null},
                 {null, null, null, null},
@@ -146,7 +182,7 @@ public class Muon extends javax.swing.JPanel {
                 "Title 1", "Title 2", "Title 3", "Title 4"
             }
         ));
-        jScrollPane2.setViewportView(jTable2);
+        jScrollPane2.setViewportView(tablemuonchitiet);
 
         jPanel2.setBackground(new java.awt.Color(255, 255, 153));
         jPanel2.setBorder(javax.swing.BorderFactory.createTitledBorder("Điều Khiển"));
@@ -154,6 +190,11 @@ public class Muon extends javax.swing.JPanel {
         jButton1.setBackground(new java.awt.Color(0, 153, 153));
         jButton1.setIcon(new javax.swing.ImageIcon("E:\\yeu\\image\\++++++++++++++++++.png")); // NOI18N
         jButton1.setText("Nhập");
+        jButton1.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jButton1ActionPerformed(evt);
+            }
+        });
 
         jButton2.setBackground(new java.awt.Color(0, 153, 153));
         jButton2.setIcon(new javax.swing.ImageIcon("E:\\yeu\\image\\themphieu.png")); // NOI18N
@@ -162,14 +203,29 @@ public class Muon extends javax.swing.JPanel {
         jButton3.setBackground(new java.awt.Color(0, 153, 153));
         jButton3.setIcon(new javax.swing.ImageIcon("E:\\yeu\\image\\suaphieu.png")); // NOI18N
         jButton3.setText("Sửa");
+        jButton3.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jButton3ActionPerformed(evt);
+            }
+        });
 
         jButton4.setBackground(new java.awt.Color(0, 153, 153));
         jButton4.setIcon(new javax.swing.ImageIcon("E:\\yeu\\image\\xoaphieu.png")); // NOI18N
         jButton4.setText("Xóa");
+        jButton4.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jButton4ActionPerformed(evt);
+            }
+        });
 
         jButton5.setBackground(new java.awt.Color(0, 153, 153));
         jButton5.setIcon(new javax.swing.ImageIcon("E:\\yeu\\image\\huyphieu.png")); // NOI18N
         jButton5.setText("Hủy");
+        jButton5.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jButton5ActionPerformed(evt);
+            }
+        });
 
         jButton6.setBackground(new java.awt.Color(0, 153, 153));
         jButton6.setIcon(new javax.swing.ImageIcon("E:\\yeu\\image\\prin.png")); // NOI18N
@@ -220,10 +276,20 @@ public class Muon extends javax.swing.JPanel {
         jButton7.setBackground(new java.awt.Color(0, 153, 153));
         jButton7.setIcon(new javax.swing.ImageIcon("E:\\yeu\\image\\themphieu.png")); // NOI18N
         jButton7.setText("Thêm");
+        jButton7.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jButton7ActionPerformed(evt);
+            }
+        });
 
         jButton8.setBackground(new java.awt.Color(0, 153, 153));
         jButton8.setIcon(new javax.swing.ImageIcon("E:\\yeu\\image\\huyphieu.png")); // NOI18N
         jButton8.setText("Hủy");
+        jButton8.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jButton8ActionPerformed(evt);
+            }
+        });
 
         javax.swing.GroupLayout jPanel3Layout = new javax.swing.GroupLayout(jPanel3);
         jPanel3.setLayout(jPanel3Layout);
@@ -238,8 +304,8 @@ public class Muon extends javax.swing.JPanel {
                             .addComponent(jLabel6, javax.swing.GroupLayout.PREFERRED_SIZE, 65, javax.swing.GroupLayout.PREFERRED_SIZE))
                         .addGap(28, 28, 28)
                         .addGroup(jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addComponent(jTextField7, javax.swing.GroupLayout.PREFERRED_SIZE, 149, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addComponent(jTextField6, javax.swing.GroupLayout.PREFERRED_SIZE, 149, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                            .addComponent(txt_serisach, javax.swing.GroupLayout.PREFERRED_SIZE, 149, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addComponent(txt_mpchitiet, javax.swing.GroupLayout.PREFERRED_SIZE, 149, javax.swing.GroupLayout.PREFERRED_SIZE)))
                     .addGroup(jPanel3Layout.createSequentialGroup()
                         .addGap(66, 66, 66)
                         .addComponent(jButton7, javax.swing.GroupLayout.PREFERRED_SIZE, 96, javax.swing.GroupLayout.PREFERRED_SIZE)
@@ -251,12 +317,12 @@ public class Muon extends javax.swing.JPanel {
             jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(jPanel3Layout.createSequentialGroup()
                 .addGroup(jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(jTextField6, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(txt_mpchitiet, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(jLabel6))
                 .addGap(11, 11, 11)
                 .addGroup(jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jLabel7)
-                    .addComponent(jTextField7, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addComponent(txt_serisach, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                 .addGroup(jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jButton7, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
@@ -298,7 +364,123 @@ public class Muon extends javax.swing.JPanel {
         );
     }// </editor-fold>//GEN-END:initComponents
 
+    private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
+      try{
+      String mapm=txt_phieumuon.getText();
+      String madg=txt_madg.getText();
+      String manv=txt_manv.getText();
+      Date ngaymuon=Date.valueOf(txt_ngaymuon.getText());
+      Date ngayhen=Date.valueOf(txt_ngayhen.getText());
+      Muon m=new Muon(mapm,madg,manv,ngaymuon,ngayhen);
+     
+    // JOptionPane.showMessageDialog(this, Regex.checkdate(checlnm));
+          
+      if(mdt.KiemTraMaMuon(mapm)){
+     if(mdt.ThemPhieuMuon(m))
+          JOptionPane.showMessageDialog(this, "Them Phieu Muon Thanh Cong");
+      
+     
+      }
+      else
+          JOptionPane.showMessageDialog(this, "Trung ma,Them Phieu Muon That Bai");
+      }
+      catch(Exception ex){
+          JOptionPane.showMessageDialog(this, ex);
+      }
+      TTbangMuon();
+      
+    }//GEN-LAST:event_jButton1ActionPerformed
 
+    private void txt_manvKeyReleased(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_txt_manvKeyReleased
+//        try {
+//            ResultSet rs=mdt.TimMaNV(txt_manv.getText());
+//            txt_manv.setText(rs.getString(20));
+//        } catch (SQLException ex) {
+//            Logger.getLogger(MuonSach.class.getName()).log(Level.SEVERE, null, ex);
+//        }
+    }//GEN-LAST:event_txt_manvKeyReleased
+
+    private void tablemuonMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_tablemuonMouseClicked
+        int row = tablemuon.getSelectedRow();
+        if (row != -1) {
+            txt_phieumuon.setText(tablemuon.getValueAt(row, 0).toString());
+            txt_madg.setText(tablemuon.getValueAt(row, 1).toString());
+            txt_manv.setText(tablemuon.getValueAt(row, 2).toString());
+            txt_ngaymuon.setText(tablemuon.getValueAt(row, 3).toString());
+            txt_ngayhen.setText(tablemuon.getValueAt(row, 4).toString());
+        }
+    }//GEN-LAST:event_tablemuonMouseClicked
+
+    private void jButton3ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton3ActionPerformed
+      try{
+      String mapm=txt_phieumuon.getText();
+      String madg=txt_madg.getText();
+      String manv=txt_manv.getText();
+      Date ngaymuon=Date.valueOf(txt_ngaymuon.getText());
+      Date ngayhen=Date.valueOf(txt_ngayhen.getText());
+      Muon m=new Muon(mapm,madg,manv,ngaymuon,ngayhen);
+      if(mdt.ChinhSuaBangMuon(m)){
+          JOptionPane.showMessageDialog(this, "Chinh Sua Thanh Cong");
+        
+         
+      }
+      else
+          JOptionPane.showMessageDialog(this, "Chinh sua that Bai");
+      }
+      catch(Exception ex){
+          JOptionPane.showMessageDialog(this, "Loi Dau Do");
+      }
+      TTbangMuon();
+    }//GEN-LAST:event_jButton3ActionPerformed
+
+    private void jButton4ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton4ActionPerformed
+    
+      if (JOptionPane.showConfirmDialog(null, "Are you sure?", "WARNING",
+                JOptionPane.YES_NO_OPTION) == JOptionPane.YES_OPTION) {
+            String ma = txt_phieumuon.getText();
+            boolean f = mdt.XoaPhieuMuon(ma);
+            if (f) {
+                JOptionPane.showMessageDialog(this, "Xoa Phieu Muon Thanh Cong");
+            } else {
+                JOptionPane.showMessageDialog(this, "Xoa Phieu Muon That Bai");
+            }
+        } else {
+          
+        }
+      TTbangMuon();
+    }//GEN-LAST:event_jButton4ActionPerformed
+
+    private void jButton5ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton5ActionPerformed
+      txt_phieumuon.setText("");
+      txt_madg.setText("");
+      txt_manv.setText("");
+      txt_ngayhen.setText("");
+      txt_ngaymuon.setText("");
+    }//GEN-LAST:event_jButton5ActionPerformed
+
+    private void jButton8ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton8ActionPerformed
+      txt_mpchitiet.setText("");
+      txt_serisach.setText("");
+      txt_mpchitiet.setEnabled(true);
+    }//GEN-LAST:event_jButton8ActionPerformed
+
+    private void jButton7ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton7ActionPerformed
+       try{
+       String mapm=txt_mpchitiet.getText();
+       String serisach=txt_serisach.getText();
+        MuonChiTiet mct=new MuonChiTiet(mapm,serisach);
+        boolean f=mdt.ThemPhieuMuonChiTiet(mct);
+       if(f)
+           JOptionPane.showMessageDialog(this, "Them  Phieu Muon Chi Tiet Thanh Cong");
+       else
+           JOptionPane.showMessageDialog(this, "Them Phieu Muon Chi tiet That Bai");
+       }
+       catch(Exception ex){
+           JOptionPane.showMessageDialog(this, "Loi Dau Do");
+       }
+    }//GEN-LAST:event_jButton7ActionPerformed
+
+    
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton jButton1;
     private javax.swing.JButton jButton2;
@@ -320,14 +502,14 @@ public class Muon extends javax.swing.JPanel {
     private javax.swing.JPanel jPanel3;
     private javax.swing.JScrollPane jScrollPane1;
     private javax.swing.JScrollPane jScrollPane2;
-    private javax.swing.JTable jTable1;
-    private javax.swing.JTable jTable2;
-    private javax.swing.JTextField jTextField1;
-    private javax.swing.JTextField jTextField2;
-    private javax.swing.JTextField jTextField3;
-    private javax.swing.JTextField jTextField4;
-    private javax.swing.JTextField jTextField5;
-    private javax.swing.JTextField jTextField6;
-    private javax.swing.JTextField jTextField7;
+    private javax.swing.JTable tablemuon;
+    private javax.swing.JTable tablemuonchitiet;
+    private javax.swing.JTextField txt_madg;
+    private javax.swing.JTextField txt_manv;
+    private javax.swing.JTextField txt_mpchitiet;
+    private javax.swing.JTextField txt_ngayhen;
+    private javax.swing.JTextField txt_ngaymuon;
+    private javax.swing.JTextField txt_phieumuon;
+    private javax.swing.JTextField txt_serisach;
     // End of variables declaration//GEN-END:variables
 }

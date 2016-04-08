@@ -6,14 +6,19 @@
 package framecon;
 
 import DuLieu.DbUtils;
+import DuLieu.SachChiTietData;
 import DuLieu.SachData;
 import Object.Sach;
+import Object.ChiTietSAch;
 import java.awt.Color;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.util.Enumeration;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+import javax.swing.AbstractButton;
 import javax.swing.JOptionPane;
+import javax.swing.JRadioButton;
 
 /**
  *
@@ -25,21 +30,28 @@ public class pane1 extends javax.swing.JPanel {
      * Creates new form pane1
      */
     SachData sdt = new SachData();
-
+    SachChiTietData sctdt=new SachChiTietData();
     public pane1() {
         initComponents();
       
         this.setBackground(Color.CYAN);
         laytattennxb();
         Thongtin();
+        LayTatMaSAch();
+        showsachchitiet();
       
 
     }
-     //hien thi ra nha xuat ban
+     //hien thi ra thong tin cua bang sach
   
     public void Thongtin(){
         ResultSet rs=sdt.ThongTinSach();
         tablesach.setModel(DbUtils.resultSetToTableModel(rs));
+    }
+    //hien thi ra thong tin cua bang sach chi tiet
+    public void showsachchitiet(){
+        ResultSet rs=sctdt.ThongTinChiTietSach();
+        tablechitietsach.setModel(DbUtils.resultSetToTableModel(rs));
     }
      // lay ten nha xuat ban
     public void laytattennxb() {
@@ -48,6 +60,18 @@ public class pane1 extends javax.swing.JPanel {
             while (rs.next()) {
                 String ten = rs.getString(1);
                 cb_tennxb.addItem(ten);
+            }
+        } catch (SQLException ex) {
+            Logger.getLogger(pane1.class.getName()).log(Level.SEVERE, null, ex);
+        }
+    }
+    //lay ra toan bo ma sach cua bnag sach
+    public void LayTatMaSAch(){
+        ResultSet rs=sctdt.Layramasach();
+        try {
+            while(rs.next()){
+                String masach=rs.getString(1);
+                cb_masach.addItem(masach);
             }
         } catch (SQLException ex) {
             Logger.getLogger(pane1.class.getName()).log(Level.SEVERE, null, ex);
@@ -63,7 +87,7 @@ public class pane1 extends javax.swing.JPanel {
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
     private void initComponents() {
 
-        buttonGroup1 = new javax.swing.ButtonGroup();
+        buttonGroup11 = new javax.swing.ButtonGroup();
         jPanel1 = new javax.swing.JPanel();
         jLabel1 = new javax.swing.JLabel();
         txt_masach = new javax.swing.JTextField();
@@ -89,7 +113,7 @@ public class pane1 extends javax.swing.JPanel {
         jButton6 = new javax.swing.JButton();
         jPanel4 = new javax.swing.JPanel();
         jScrollPane2 = new javax.swing.JScrollPane();
-        jTable2 = new javax.swing.JTable();
+        tablechitietsach = new javax.swing.JTable();
         jPanel6 = new javax.swing.JPanel();
         jButton7 = new javax.swing.JButton();
         jButton8 = new javax.swing.JButton();
@@ -98,15 +122,15 @@ public class pane1 extends javax.swing.JPanel {
         jButton1 = new javax.swing.JButton();
         jTextField1 = new javax.swing.JTextField();
         jButton2 = new javax.swing.JButton();
-        jTextField2 = new javax.swing.JTextField();
+        txt_lookchitiet = new javax.swing.JTextField();
         jPanel5 = new javax.swing.JPanel();
         jLabel8 = new javax.swing.JLabel();
-        jTextField9 = new javax.swing.JTextField();
+        txt_serisach = new javax.swing.JTextField();
         jLabel9 = new javax.swing.JLabel();
-        jComboBox2 = new javax.swing.JComboBox();
+        cb_masach = new javax.swing.JComboBox();
         jLabel10 = new javax.swing.JLabel();
-        jRadioButton1 = new javax.swing.JRadioButton();
-        jRadioButton2 = new javax.swing.JRadioButton();
+        txt_tinhtrangtot = new javax.swing.JRadioButton();
+        txt_tinhtranghuhong = new javax.swing.JRadioButton();
 
         jPanel1.setBackground(new java.awt.Color(255, 255, 153));
         jPanel1.setBorder(javax.swing.BorderFactory.createTitledBorder("Nhập sách"));
@@ -314,8 +338,8 @@ public class pane1 extends javax.swing.JPanel {
         jPanel4.setBackground(new java.awt.Color(255, 255, 153));
         jPanel4.setBorder(javax.swing.BorderFactory.createTitledBorder("Sách Chi Tiêt"));
 
-        jTable2.setBackground(new java.awt.Color(255, 255, 153));
-        jTable2.setModel(new javax.swing.table.DefaultTableModel(
+        tablechitietsach.setBackground(new java.awt.Color(255, 255, 153));
+        tablechitietsach.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {
                 {null, null, null, null},
                 {null, null, null, null},
@@ -326,7 +350,12 @@ public class pane1 extends javax.swing.JPanel {
                 "Title 1", "Title 2", "Title 3", "Title 4"
             }
         ));
-        jScrollPane2.setViewportView(jTable2);
+        tablechitietsach.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                tablechitietsachMouseClicked(evt);
+            }
+        });
+        jScrollPane2.setViewportView(tablechitietsach);
 
         jPanel6.setBackground(new java.awt.Color(255, 255, 153));
         jPanel6.setBorder(javax.swing.BorderFactory.createTitledBorder("Chưc năng"));
@@ -334,18 +363,38 @@ public class pane1 extends javax.swing.JPanel {
         jButton7.setBackground(new java.awt.Color(0, 153, 153));
         jButton7.setIcon(new javax.swing.ImageIcon("E:\\imgg\\16them.png")); // NOI18N
         jButton7.setText("Thêm");
+        jButton7.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jButton7ActionPerformed(evt);
+            }
+        });
 
         jButton8.setBackground(new java.awt.Color(0, 153, 153));
         jButton8.setIcon(new javax.swing.ImageIcon("E:\\imgg\\16xoa.png")); // NOI18N
         jButton8.setText("Xoa");
+        jButton8.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jButton8ActionPerformed(evt);
+            }
+        });
 
         jButton9.setBackground(new java.awt.Color(0, 153, 153));
         jButton9.setIcon(new javax.swing.ImageIcon("E:\\imgg\\16update.png")); // NOI18N
         jButton9.setText("Update");
+        jButton9.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jButton9ActionPerformed(evt);
+            }
+        });
 
         jButton10.setBackground(new java.awt.Color(0, 153, 153));
         jButton10.setIcon(new javax.swing.ImageIcon("E:\\imgg\\16nhap.png")); // NOI18N
         jButton10.setText("Nhập");
+        jButton10.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jButton10ActionPerformed(evt);
+            }
+        });
 
         javax.swing.GroupLayout jPanel6Layout = new javax.swing.GroupLayout(jPanel6);
         jPanel6.setLayout(jPanel6Layout);
@@ -399,6 +448,17 @@ public class pane1 extends javax.swing.JPanel {
         jButton2.setBackground(new java.awt.Color(0, 153, 153));
         jButton2.setIcon(new javax.swing.ImageIcon("E:\\imgg\\search.png")); // NOI18N
         jButton2.setText("Search");
+        jButton2.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jButton2ActionPerformed(evt);
+            }
+        });
+
+        txt_lookchitiet.addKeyListener(new java.awt.event.KeyAdapter() {
+            public void keyReleased(java.awt.event.KeyEvent evt) {
+                txt_lookchitietKeyReleased(evt);
+            }
+        });
 
         jPanel5.setBackground(new java.awt.Color(255, 255, 153));
         jPanel5.setBorder(javax.swing.BorderFactory.createTitledBorder("Nhap Sach Chi Tiet"));
@@ -407,15 +467,13 @@ public class pane1 extends javax.swing.JPanel {
 
         jLabel9.setText("ma sach");
 
-        jComboBox2.setModel(new javax.swing.DefaultComboBoxModel(new String[] { "Item 1", "Item 2", "Item 3", "Item 4" }));
-
         jLabel10.setText("Tinh Trang");
 
-        buttonGroup1.add(jRadioButton1);
-        jRadioButton1.setText("Tốt");
+        buttonGroup11.add(txt_tinhtrangtot);
+        txt_tinhtrangtot.setText("Tốt");
 
-        buttonGroup1.add(jRadioButton2);
-        jRadioButton2.setText("Hỏng");
+        buttonGroup11.add(txt_tinhtranghuhong);
+        txt_tinhtranghuhong.setText("Hỏng");
 
         javax.swing.GroupLayout jPanel5Layout = new javax.swing.GroupLayout(jPanel5);
         jPanel5.setLayout(jPanel5Layout);
@@ -425,9 +483,9 @@ public class pane1 extends javax.swing.JPanel {
                 .addGroup(jPanel5Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(jPanel5Layout.createSequentialGroup()
                         .addGap(22, 22, 22)
-                        .addComponent(jRadioButton1)
+                        .addComponent(txt_tinhtrangtot)
                         .addGap(36, 36, 36)
-                        .addComponent(jRadioButton2))
+                        .addComponent(txt_tinhtranghuhong))
                     .addGroup(jPanel5Layout.createSequentialGroup()
                         .addContainerGap()
                         .addGroup(jPanel5Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -437,8 +495,8 @@ public class pane1 extends javax.swing.JPanel {
                         .addGroup(jPanel5Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                             .addComponent(jLabel10)
                             .addGroup(jPanel5Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                                .addComponent(jTextField9)
-                                .addComponent(jComboBox2, 0, 124, Short.MAX_VALUE)))))
+                                .addComponent(txt_serisach)
+                                .addComponent(cb_masach, 0, 124, Short.MAX_VALUE)))))
                 .addContainerGap(36, Short.MAX_VALUE))
         );
         jPanel5Layout.setVerticalGroup(
@@ -447,17 +505,17 @@ public class pane1 extends javax.swing.JPanel {
                 .addContainerGap(20, Short.MAX_VALUE)
                 .addGroup(jPanel5Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jLabel8)
-                    .addComponent(jTextField9, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addComponent(txt_serisach, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                 .addGroup(jPanel5Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jLabel9)
-                    .addComponent(jComboBox2, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addComponent(cb_masach, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(jLabel10)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addGroup(jPanel5Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(jRadioButton1)
-                    .addComponent(jRadioButton2)))
+                    .addComponent(txt_tinhtrangtot)
+                    .addComponent(txt_tinhtranghuhong)))
         );
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(this);
@@ -483,7 +541,7 @@ public class pane1 extends javax.swing.JPanel {
                                         .addGap(27, 27, 27)
                                         .addComponent(jButton2)
                                         .addGap(18, 18, 18)
-                                        .addComponent(jTextField2, javax.swing.GroupLayout.PREFERRED_SIZE, 362, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                                        .addComponent(txt_lookchitiet, javax.swing.GroupLayout.PREFERRED_SIZE, 362, javax.swing.GroupLayout.PREFERRED_SIZE)))
                                 .addGap(0, 63, Short.MAX_VALUE))))
                     .addGroup(layout.createSequentialGroup()
                         .addGap(11, 11, 11)
@@ -505,7 +563,7 @@ public class pane1 extends javax.swing.JPanel {
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                             .addComponent(jButton2, javax.swing.GroupLayout.PREFERRED_SIZE, 34, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addComponent(jTextField2, javax.swing.GroupLayout.PREFERRED_SIZE, 32, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                            .addComponent(txt_lookchitiet, javax.swing.GroupLayout.PREFERRED_SIZE, 32, javax.swing.GroupLayout.PREFERRED_SIZE)))
                     .addGroup(layout.createSequentialGroup()
                         .addContainerGap()
                         .addComponent(jPanel1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
@@ -522,9 +580,10 @@ public class pane1 extends javax.swing.JPanel {
     }//GEN-LAST:event_cb_tennxbItemStateChanged
 
     private void jButton5ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton5ActionPerformed
+       String masach=null;
         try{
         boolean kt = false;
-        String masach = txt_masach.getText();
+         masach = txt_masach.getText();
         String ten = txt_tensach.getText();
         String tacgia = txt_tacgiasach.getText();
         String theloai = txt_theloai.getText();
@@ -557,6 +616,7 @@ public class pane1 extends javax.swing.JPanel {
 
             if (sdt.ThemLoSach(s1)) {
                 JOptionPane.showMessageDialog(this, "Them Sach Thanh Cong");
+                cb_masach.addItem(masach);
 
             } 
             }
@@ -568,6 +628,7 @@ public class pane1 extends javax.swing.JPanel {
             JOptionPane.showMessageDialog(this, ex);
         }
         Thongtin();
+        
         
     }//GEN-LAST:event_jButton5ActionPerformed
 
@@ -594,9 +655,10 @@ public class pane1 extends javax.swing.JPanel {
             String ma = txt_masach.getText();
             boolean f = sdt.XoaLoSach(ma);
             if (f) {
-                JOptionPane.showMessageDialog(this, "Xoa Nha Xuat Ban Thanh Cong");
+                JOptionPane.showMessageDialog(this, "Xoa Lo  Sach Thanh Cong");
+                showsachchitiet();
             } else {
-                JOptionPane.showMessageDialog(this, "Xoa Nha Xuat Ban That Bai");
+                JOptionPane.showMessageDialog(this, "Xoa Lo Sach That Bai");
             }
         } else {
 
@@ -604,9 +666,114 @@ public class pane1 extends javax.swing.JPanel {
          Thongtin();
     }//GEN-LAST:event_jButton4ActionPerformed
 
+    private void jButton7ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton7ActionPerformed
+       String serisach=txt_serisach.getText();
+       String masach=cb_masach.getSelectedItem().toString();
+       String chon=null;
+       Enumeration<AbstractButton> bg=buttonGroup11.getElements();
+      while(bg.hasMoreElements()){
+          JRadioButton jrd=(JRadioButton)bg.nextElement();
+          if(jrd.isSelected()){
+               chon =jrd.getText();
+          }
+              
+      }
+      JOptionPane.showMessageDialog(this,chon);
+      JOptionPane.showMessageDialog(this, masach);
+        ChiTietSAch sct=new ChiTietSAch(serisach,masach,chon);
+        if(sctdt.checkseritrung(serisach)){
+        boolean f=sctdt.ThemSachChiTiet(sct);
+      if(f){
+          JOptionPane.showMessageDialog(this, "Them Mot Sach Chi Tiet Thanh Cong");
+      }
+      else
+          JOptionPane.showMessageDialog(this, "Them Sach Chi Tiet Khong Thanh Cong");
+        }
+        else
+            JOptionPane.showMessageDialog(this, "Trung seri sach,them that bai");
+      showsachchitiet();
+    }//GEN-LAST:event_jButton7ActionPerformed
+
+    private void tablechitietsachMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_tablechitietsachMouseClicked
+       int row=tablechitietsach.getSelectedRow();
+       if(row != -1){
+           txt_serisach.setText(tablechitietsach.getValueAt(row, 0).toString());
+           cb_masach.setSelectedItem(tablechitietsach.getValueAt(row, 1));
+           
+       }
+    }//GEN-LAST:event_tablechitietsachMouseClicked
+
+    private void jButton8ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton8ActionPerformed
+        String masach=cb_masach.getSelectedItem().toString();
+        if (JOptionPane.showConfirmDialog(null, "Are you sure?", "WARNING",
+                JOptionPane.YES_NO_OPTION) == JOptionPane.YES_OPTION) {
+            String serisach = txt_serisach.getText();
+            boolean f = sctdt.xoasachchitiet(serisach);
+            if (f) {
+                JOptionPane.showMessageDialog(this, "Xoa Cuon Sach Thanh Cong");
+                if(sctdt.updatesach(masach)){
+                    Thongtin();
+                    
+                }
+            } else {
+                JOptionPane.showMessageDialog(this, "Xoa Cuon Sach That Bai");
+            }
+        } else {
+
+        }
+       showsachchitiet();
+    }//GEN-LAST:event_jButton8ActionPerformed
+
+    private void jButton9ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton9ActionPerformed
+       try{
+       String serisach=txt_serisach.getText();
+       String masach=cb_masach.getSelectedItem().toString();
+       String chon=null;
+       Enumeration<AbstractButton> bg=buttonGroup11.getElements();
+      while(bg.hasMoreElements()){
+          JRadioButton jrd=(JRadioButton)bg.nextElement();
+          if(jrd.isSelected()){
+               chon =jrd.getText();
+          }
+              
+      }
+     
+      
+        ChiTietSAch sct=new ChiTietSAch(serisach,masach,chon);
+       
+        if( sctdt.UpdateSachChiTiet(sct)){
+            JOptionPane.showMessageDialog(this, "Update Sach Chi Tiet Thanh Cong");
+        }
+        else
+            JOptionPane.showMessageDialog(this, "Update Sach Chi tiet That Bai");
+       }
+       catch(Exception ex){
+           JOptionPane.showMessageDialog(this, ex);
+       }
+       showsachchitiet();
+    }//GEN-LAST:event_jButton9ActionPerformed
+
+    private void txt_lookchitietKeyReleased(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_txt_lookchitietKeyReleased
+       String timkiem=txt_lookchitiet.getText();
+       ResultSet rs=sctdt.TimkiemChiTiet(timkiem);
+       tablechitietsach.setModel(DbUtils.resultSetToTableModel(rs));
+    }//GEN-LAST:event_txt_lookchitietKeyReleased
+
+    private void jButton2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton2ActionPerformed
+      String timkiem=txt_lookchitiet.getText();
+       ResultSet rs=sctdt.TimkiemChiTiet(timkiem);
+       tablechitietsach.setModel(DbUtils.resultSetToTableModel(rs));
+    }//GEN-LAST:event_jButton2ActionPerformed
+
+    private void jButton10ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton10ActionPerformed
+       txt_serisach.setText("");
+      
+    }//GEN-LAST:event_jButton10ActionPerformed
+
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
-    private javax.swing.ButtonGroup buttonGroup1;
+    private javax.swing.ButtonGroup buttonGroup11;
+    private javax.swing.JComboBox cb_masach;
     protected static javax.swing.JComboBox cb_tennxb;
     private javax.swing.JButton jButton1;
     private javax.swing.JButton jButton10;
@@ -618,7 +785,6 @@ public class pane1 extends javax.swing.JPanel {
     private javax.swing.JButton jButton7;
     private javax.swing.JButton jButton8;
     private javax.swing.JButton jButton9;
-    private javax.swing.JComboBox jComboBox2;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel10;
     private javax.swing.JLabel jLabel2;
@@ -635,20 +801,20 @@ public class pane1 extends javax.swing.JPanel {
     private javax.swing.JPanel jPanel4;
     private javax.swing.JPanel jPanel5;
     private javax.swing.JPanel jPanel6;
-    private javax.swing.JRadioButton jRadioButton1;
-    private javax.swing.JRadioButton jRadioButton2;
     private javax.swing.JScrollPane jScrollPane1;
     private javax.swing.JScrollPane jScrollPane2;
-    private javax.swing.JTable jTable2;
     private javax.swing.JTextField jTextField1;
-    private javax.swing.JTextField jTextField2;
-    private javax.swing.JTextField jTextField9;
+    private javax.swing.JTable tablechitietsach;
     private javax.swing.JTable tablesach;
     private javax.swing.JTextField txt_gia;
+    private javax.swing.JTextField txt_lookchitiet;
     private javax.swing.JTextField txt_masach;
+    private javax.swing.JTextField txt_serisach;
     private javax.swing.JTextField txt_soluong;
     private javax.swing.JTextField txt_tacgiasach;
     private javax.swing.JTextField txt_tensach;
     private javax.swing.JTextField txt_theloai;
+    private javax.swing.JRadioButton txt_tinhtranghuhong;
+    private javax.swing.JRadioButton txt_tinhtrangtot;
     // End of variables declaration//GEN-END:variables
 }

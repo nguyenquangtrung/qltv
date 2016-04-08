@@ -8,7 +8,7 @@ package giaodien;
 
 
 
-import framecon.Muon;
+import framecon.MuonSach;
 import framecon.Nen;
 import framecon.TraSach;
 import framecon.NhaXB;
@@ -33,7 +33,7 @@ public class NewJFrame extends javax.swing.JFrame {
     pane2 pa2;
     NhaXB xb;
     Nen nen;
-    Muon m;
+    MuonSach m;
     TraSach ts;
     GridBagConstraints c;
     public NewJFrame() {
@@ -42,7 +42,7 @@ public class NewJFrame extends javax.swing.JFrame {
         nen= new Nen();
         pa2=new pane2();
         xb=new NhaXB();
-        m=new Muon();
+        m=new MuonSach();
         ts= new TraSach();
                 
         destop.setLayout(layout);

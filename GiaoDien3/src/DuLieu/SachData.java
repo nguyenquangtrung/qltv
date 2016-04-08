@@ -81,7 +81,7 @@ public class SachData {
      public boolean XoaLoSach(String ma){
        int result=0;
         try {
-            call=kn.getConnection().prepareCall("{call xoalosach(?)}");
+            call=kn.getConnection().prepareCall("{call xoalosach2(?)}");
             call.setString(1, ma);
             result=call.executeUpdate();
         } catch (SQLException ex) {
@@ -89,7 +89,8 @@ public class SachData {
         }
         return  result>0;
      }
-     //lay thong tin ve bang sach
+     //////////////////////lay thong tin ve bang sach
+     
      public ResultSet ThongTinSach(){
         try {
             call=kn.getConnection().prepareCall("{call toantaptt()}");
