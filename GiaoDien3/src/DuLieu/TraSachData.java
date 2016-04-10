@@ -40,4 +40,17 @@ public class TraSachData {
         }
         return rs;
     }
+    //update ngay tra sach
+    public boolean UpdateTraSach(String maphieu,String ngaytra){
+        int result=0;
+        try {
+            call=kn.getConnection().prepareCall("{call updatetrasach1(?)}");
+            call.setString(1, maphieu);
+           
+            result=call.executeUpdate();
+        } catch (SQLException ex) {
+            Logger.getLogger(TraSachData.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        return result>0;
+    }
 }

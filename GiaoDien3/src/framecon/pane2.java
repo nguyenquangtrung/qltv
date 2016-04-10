@@ -361,6 +361,7 @@ public class pane2 extends javax.swing.JPanel {
     }//GEN-LAST:event_tabledocgiaMouseClicked
 
     private void bt_xoadgActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_bt_xoadgActionPerformed
+        if(dgdt.ktxoadg(txt_madg.getText())){
         if (JOptionPane.showConfirmDialog(null, "Are you sure?", "WARNING",
                 JOptionPane.YES_NO_OPTION) == JOptionPane.YES_OPTION) {
             String ma = txt_madg.getText();
@@ -372,6 +373,9 @@ public class pane2 extends javax.swing.JPanel {
             }
         } else {
         }
+        }
+        else
+            JOptionPane.showMessageDialog(this, "Loi Doc Gia dang Muon Sach Khong The Xoa");
         CapNhat();
     }//GEN-LAST:event_bt_xoadgActionPerformed
 

@@ -657,6 +657,7 @@ public class pane1 extends javax.swing.JPanel {
             if (f) {
                 JOptionPane.showMessageDialog(this, "Xoa Lo  Sach Thanh Cong");
                 showsachchitiet();
+                cb_masach.removeItem(ma);
             } else {
                 JOptionPane.showMessageDialog(this, "Xoa Lo Sach That Bai");
             }

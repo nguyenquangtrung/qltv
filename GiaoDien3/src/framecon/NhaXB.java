@@ -314,19 +314,25 @@ public class NhaXB extends javax.swing.JPanel {
     }//GEN-LAST:event_themnxbActionPerformed
 
     private void bt_xoanxbActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_bt_xoanxbActionPerformed
-
+         if(nxbdt.ktxoanxb(txtmanxb.getText())){
         if (JOptionPane.showConfirmDialog(null, "Are you sure?", "WARNING",
                 JOptionPane.YES_NO_OPTION) == JOptionPane.YES_OPTION) {
             String ma = txtmanxb.getText();
             boolean f = nxbdt.XoaNXB(ma);
             if (f) {
                 JOptionPane.showMessageDialog(this, "Xoa Nha Xuat Ban Thanh Cong");
+                pane1.cb_tennxb.removeItem(ma);
             } else {
                 JOptionPane.showMessageDialog(this, "Xoa Nha Xuat Ban That Bai");
             }
         } else {
 
         }
+         }
+         else
+             JOptionPane.showMessageDialog(this, "Loi Khong The xoa Nha xuat ban nay");
+         
+       
         CapNhat();
 
     }//GEN-LAST:event_bt_xoanxbActionPerformed

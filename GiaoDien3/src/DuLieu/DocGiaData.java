@@ -123,4 +123,18 @@ public class DocGiaData {
         }
         return dg;
     }
+    //kiem tra xoa doc gia
+    public boolean ktxoadg(String ma){
+        try {
+            call=kn.getConnection().prepareCall("{call ktxoadg(?)}");
+            call.setString(1, ma);
+            rs=call.executeQuery();
+            if(rs.next()){
+                return false;
+            }
+        } catch (SQLException ex) {
+            Logger.getLogger(DocGiaData.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        return true;
+    }
 }

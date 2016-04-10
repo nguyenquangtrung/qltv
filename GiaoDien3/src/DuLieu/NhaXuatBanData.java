@@ -77,6 +77,7 @@ public class NhaXuatBanData {
        
         return rs;
     }
+    //kiem tra trug ma nxb
     public boolean KiemTraMaNXB(String ma){
         try {
             call=kn.getConnection().prepareCall("{call kiemtramanxb(?)}");
@@ -101,6 +102,20 @@ public class NhaXuatBanData {
             Logger.getLogger(NhaXuatBanData.class.getName()).log(Level.SEVERE, null, ex);
         }
         return rs;
+    }
+    //kiem tra xoa nha xua ban
+    public boolean ktxoanxb(String ma){
+        try {
+            call = kn.getConnection().prepareCall("{call kmnxb(?)}");
+            call.setString(1, ma);
+            rs = call.executeQuery();
+            if (rs.next()) {
+                return false;
+            }
+        } catch (SQLException ex) {
+            Logger.getLogger(NhaXuatBanData.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        return true;
     }
     
 

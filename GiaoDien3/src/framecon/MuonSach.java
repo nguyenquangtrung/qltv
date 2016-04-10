@@ -441,6 +441,7 @@ public class MuonSach extends javax.swing.JPanel {
             boolean f = mdt.XoaPhieuMuon(ma);
             if (f) {
                 JOptionPane.showMessageDialog(this, "Xoa Phieu Muon Thanh Cong");
+                showMuonChiTiet();
             } else {
                 JOptionPane.showMessageDialog(this, "Xoa Phieu Muon That Bai");
             }
