@@ -259,6 +259,11 @@ public class NewJFrame extends javax.swing.JFrame {
         jButton2.setText("Login");
         jButton2.setHorizontalTextPosition(javax.swing.SwingConstants.CENTER);
         jButton2.setVerticalTextPosition(javax.swing.SwingConstants.BOTTOM);
+        jButton2.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jButton2ActionPerformed(evt);
+            }
+        });
 
         jButton4.setIcon(new javax.swing.ImageIcon("E:\\yeu\\image\\doimatkhau.png")); // NOI18N
         jButton4.setText("Đổi MậtK");
@@ -383,6 +388,12 @@ destop.add(pa2, c);
        this.dispose();
        dmk.setVisible(true);
     }//GEN-LAST:event_jButton4ActionPerformed
+
+    private void jButton2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton2ActionPerformed
+       Login lg=new Login();
+       lg.setVisible(true);
+       this.dispose();
+    }//GEN-LAST:event_jButton2ActionPerformed
 
     /**
      * @param args the command line arguments

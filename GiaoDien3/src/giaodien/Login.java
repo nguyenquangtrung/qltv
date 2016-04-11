@@ -9,6 +9,7 @@ import DuLieu.DangNhapAdmin;
 import DuLieu.DocGiaData;
 import Object.Admin;
 import Object.DocGia;
+import framecon.MuonSach;
 import java.awt.Color;
 import javax.swing.JOptionPane;
 
@@ -152,6 +153,7 @@ public class Login extends javax.swing.JFrame {
           NewJFrame newj=new NewJFrame();
           newj.setVisible(true);
           NewJFrame.hienthi.setText(ad.getName());
+          
            
        }
        else if(dg != null){
@@ -207,6 +209,6 @@ public class Login extends javax.swing.JFrame {
     private javax.swing.JLabel jLabel3;
     private javax.swing.JPanel jPanel1;
     private javax.swing.JTextField txt_matkhau;
-    private javax.swing.JTextField txt_taikhoan;
+    protected static javax.swing.JTextField txt_taikhoan;
     // End of variables declaration//GEN-END:variables
 }

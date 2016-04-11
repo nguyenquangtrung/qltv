@@ -375,7 +375,7 @@ public class pane2 extends javax.swing.JPanel {
         }
         }
         else
-            JOptionPane.showMessageDialog(this, "Loi Doc Gia dang Muon Sach Khong The Xoa");
+            JOptionPane.showMessageDialog(this, "Loi! Doc Gia dang Muon Sach Khong The Xoa");
         CapNhat();
     }//GEN-LAST:event_bt_xoadgActionPerformed
 

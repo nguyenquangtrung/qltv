@@ -8,12 +8,16 @@ package framecon;
 import DuLieu.DbUtils;
 import DuLieu.MuonData;
 import DuLieu.Regex;
+import DuLieu.SachData;
 import Object.Muon;
 import Object.MuonChiTiet;
+import giaodien.Login;
 import java.awt.Color;
-import java.sql.Date;
+import java.util.Date;
+//import java.sql.Date;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.text.SimpleDateFormat;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.swing.JOptionPane;
@@ -29,11 +33,20 @@ public class MuonSach extends javax.swing.JPanel {
      */
     
     MuonData mdt=new MuonData();
+    pane1 pn=new pane1();
+    SachData sdt=new SachData();
     public MuonSach() {
         initComponents();
         this.setBackground(Color.CYAN);
         TTbangMuon();
         showMuonChiTiet();
+      String pattern = "yyyy-MM-dd";
+SimpleDateFormat simpleDateFormat = new SimpleDateFormat(pattern);
+
+String date = simpleDateFormat.format(new Date());
+   txt_ngaymuon.setText(date);
+   
+   
     }
       //Hirn thi thong tin bang muon
     public void TTbangMuon(){
@@ -100,6 +113,8 @@ public class MuonSach extends javax.swing.JPanel {
         jLabel3.setText("Mã Đọc Giả");
 
         jLabel4.setText("Ngày Mượn");
+
+        txt_ngaymuon.setEditable(false);
 
         jLabel5.setText("Ngày Hẹn");
 
@@ -369,16 +384,29 @@ public class MuonSach extends javax.swing.JPanel {
       String mapm=txt_phieumuon.getText();
       String madg=txt_madg.getText();
       String manv=txt_manv.getText();
-      Date ngaymuon=Date.valueOf(txt_ngaymuon.getText());
-      Date ngayhen=Date.valueOf(txt_ngayhen.getText());
-      Muon m=new Muon(mapm,madg,manv,ngaymuon,ngayhen);
-     
+          
+          String pattern = "yyyy-MM-dd";
+SimpleDateFormat simpleDateFormat = new SimpleDateFormat(pattern);
+
+String date = simpleDateFormat.format(new Date());
+   
+      java.sql.Date muon=java.sql.Date.valueOf(date);
+      java.sql.Date ngayhen= java.sql.Date.valueOf(txt_ngayhen.getText());
+      Muon m=new Muon(mapm,madg,manv,muon,ngayhen);
+      
+     if(!mdt.ktdg(madg)){
+         JOptionPane.showMessageDialog(this, "Khong Ton Tai Ma Doc Gia");
+     }
+     if(!mdt.ktmanv(manv)){
+         JOptionPane.showMessageDialog(this, "Khong ton Tai Ma Nhan Vien");
+     }
     // JOptionPane.showMessageDialog(this, Regex.checkdate(checlnm));
           
-      if(mdt.KiemTraMaMuon(mapm)){
+      if(mdt.KiemTraMaMuon(mapm) && mdt.ktdg(madg) && mdt.ktmanv(manv) ){
      if(mdt.ThemPhieuMuon(m))
           JOptionPane.showMessageDialog(this, "Them Phieu Muon Thanh Cong");
-      
+       else
+         JOptionPane.showMessageDialog(this, "Them Phie Muon That Bai");
      
       }
       else
@@ -416,8 +444,9 @@ public class MuonSach extends javax.swing.JPanel {
       String mapm=txt_phieumuon.getText();
       String madg=txt_madg.getText();
       String manv=txt_manv.getText();
-      Date ngaymuon=Date.valueOf(txt_ngaymuon.getText());
-      Date ngayhen=Date.valueOf(txt_ngayhen.getText());
+      java.sql.Date ngaymuon=java.sql.Date.valueOf(txt_ngaymuon.getText());
+      java.sql.Date ngayhen=java.sql.Date.valueOf(txt_ngayhen.getText());
+     
       Muon m=new Muon(mapm,madg,manv,ngaymuon,ngayhen);
       if(mdt.ChinhSuaBangMuon(m)){
           JOptionPane.showMessageDialog(this, "Chinh Sua Thanh Cong");
@@ -471,11 +500,19 @@ public class MuonSach extends javax.swing.JPanel {
        String serisach=txt_serisach.getText();
         MuonChiTiet mct=new MuonChiTiet(mapm,serisach);
         boolean f=mdt.ThemPhieuMuonChiTiet(mct);
-       if(f)
+        
+       if(f ){
            JOptionPane.showMessageDialog(this, "Them  Phieu Muon Chi Tiet Thanh Cong");
+           showMuonChiTiet();
+           if(mdt.updateSLSkhimuonsach(serisach)){
+              
+           }
+       }
        else
            JOptionPane.showMessageDialog(this, "Them Phieu Muon Chi tiet That Bai");
        }
+        
+       
        catch(Exception ex){
            JOptionPane.showMessageDialog(this, "Loi Dau Do");
        }

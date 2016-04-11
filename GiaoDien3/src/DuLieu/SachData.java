@@ -114,4 +114,19 @@ public class SachData {
         }
          return true;
      }
+     //kiem tra co the xoa sach
+     public boolean ktxs(String masach){
+        try {
+            call = kn.getConnection().prepareCall("{call ktxoasach(?)}");
+            call.setString(1, masach);
+            if (rs.next()) {
+                return false;
+            } else {
+                return true;
+            }
+        } catch (SQLException ex) {
+            Logger.getLogger(SachData.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        return true;
+    }
 }

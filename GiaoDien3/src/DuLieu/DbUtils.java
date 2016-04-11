@@ -5,9 +5,11 @@
  */
 package DuLieu;
 
+import java.sql.Date;
 import java.sql.ResultSet;
 import java.sql.ResultSetMetaData;
 import java.sql.SQLException;
+import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Vector;
@@ -42,6 +44,11 @@ public class DbUtils {
 		Vector<Object> newRow = new Vector<Object>();
 
 		for (int i = 1; i <= numberOfColumns; i++) {
+//                   if(metaData.getColumnType(i)==91){
+//                     //  rs.getObject(i)
+//                       newRow.addElement(LocalDate.parse(rs.getObject(i).toString()).plusDays(+2).toString());
+//
+//                   }else
 		    newRow.addElement(rs.getObject(i));
 		}
 

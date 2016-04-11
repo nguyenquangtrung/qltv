@@ -152,6 +152,11 @@ public class pane1 extends javax.swing.JPanel {
                 cb_tennxbItemStateChanged(evt);
             }
         });
+        cb_tennxb.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                cb_tennxbActionPerformed(evt);
+            }
+        });
 
         jLabel4.setText("so luong");
 
@@ -470,10 +475,10 @@ public class pane1 extends javax.swing.JPanel {
         jLabel10.setText("Tinh Trang");
 
         buttonGroup11.add(txt_tinhtrangtot);
-        txt_tinhtrangtot.setText("Tốt");
+        txt_tinhtrangtot.setText("Tot");
 
         buttonGroup11.add(txt_tinhtranghuhong);
-        txt_tinhtranghuhong.setText("Hỏng");
+        txt_tinhtranghuhong.setText("Hong");
 
         javax.swing.GroupLayout jPanel5Layout = new javax.swing.GroupLayout(jPanel5);
         jPanel5.setLayout(jPanel5Layout);
@@ -637,8 +642,9 @@ public class pane1 extends javax.swing.JPanel {
     }//GEN-LAST:event_jButton3ActionPerformed
 
     private void tablesachMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_tablesachMouseClicked
-       int row=tablesach.getSelectedRow();
-       if(row !=-1){
+         int row=tablesach.getSelectedRow();
+         JOptionPane.showMessageDialog(this, "aaa");
+       if(row != -1){
            txt_masach.setText(tablesach.getValueAt(row, 0).toString());
            txt_tensach.setText(tablesach.getValueAt(row, 1).toString());
            txt_tacgiasach.setText(tablesach.getValueAt(row, 2).toString());
@@ -650,7 +656,8 @@ public class pane1 extends javax.swing.JPanel {
     }//GEN-LAST:event_tablesachMouseClicked
 
     private void jButton4ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton4ActionPerformed
-         if (JOptionPane.showConfirmDialog(null, "Are you sure?", "WARNING",
+         if(sdt.ktxs(txt_masach.getText())){
+        if (JOptionPane.showConfirmDialog(null, "Are you sure?", "WARNING",
                 JOptionPane.YES_NO_OPTION) == JOptionPane.YES_OPTION) {
             String ma = txt_masach.getText();
             boolean f = sdt.XoaLoSach(ma);
@@ -664,35 +671,67 @@ public class pane1 extends javax.swing.JPanel {
         } else {
 
         }
+      
+         }
+           else
+        JOptionPane.showMessageDialog(this, "Loi Khong the Xoa");
          Thongtin();
     }//GEN-LAST:event_jButton4ActionPerformed
 
     private void jButton7ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton7ActionPerformed
-       String serisach=txt_serisach.getText();
-       String masach=cb_masach.getSelectedItem().toString();
-       String chon=null;
-       Enumeration<AbstractButton> bg=buttonGroup11.getElements();
-      while(bg.hasMoreElements()){
-          JRadioButton jrd=(JRadioButton)bg.nextElement();
-          if(jrd.isSelected()){
-               chon =jrd.getText();
-          }
+        try {
+            int count =0;
+            int count1=0;
+            String serisach=txt_serisach.getText();
+            String masach=cb_masach.getSelectedItem().toString();
+            String chon=null;
+            JOptionPane.showMessageDialog(this, masach);
+            ResultSet rs1=sctdt.demserisach(masach);
+              while(rs1.next()){
+                  count1=rs1.getInt(1);
+              }
+          
+             
+            //lay ra so luong sach tai noi ma sach
+            ResultSet rs=sctdt.layslsachsach(masach);
+            if(rs.next()){
+                count=rs.getInt(1);
               
-      }
-      JOptionPane.showMessageDialog(this,chon);
-      JOptionPane.showMessageDialog(this, masach);
-        ChiTietSAch sct=new ChiTietSAch(serisach,masach,chon);
-        if(sctdt.checkseritrung(serisach)){
-        boolean f=sctdt.ThemSachChiTiet(sct);
-      if(f){
-          JOptionPane.showMessageDialog(this, "Them Mot Sach Chi Tiet Thanh Cong");
-      }
-      else
-          JOptionPane.showMessageDialog(this, "Them Sach Chi Tiet Khong Thanh Cong");
+            }
+      
+            //dem so luong seri sach trong 1 ma sach
+              
+            
+            Enumeration<AbstractButton> bg=buttonGroup11.getElements();
+            while(bg.hasMoreElements()){
+                JRadioButton jrd=(JRadioButton)bg.nextElement();
+                if(jrd.isSelected()){
+                    chon =jrd.getText();
+                }
+                
+            }
+            
+            ChiTietSAch sct=new ChiTietSAch(serisach,masach,chon);
+            if(count >count1){
+            if(sctdt.checkseritrung(serisach) ){
+                boolean f=sctdt.ThemSachChiTiet(sct);
+                if(f){
+                    JOptionPane.showMessageDialog(this, "Them Mot Sach Chi Tiet Thanh Cong");
+                }
+                else
+                    JOptionPane.showMessageDialog(this, "Them Sach Chi Tiet Khong Thanh Cong");
+            }
+            else
+                JOptionPane.showMessageDialog(this, "Trung seri sach,them that bai");
+            showsachchitiet();
+            }
+            else
+            JOptionPane.showMessageDialog(this, "Loi so Luong Sach Khong Them DC");
         }
-        else
-            JOptionPane.showMessageDialog(this, "Trung seri sach,them that bai");
-      showsachchitiet();
+         catch (SQLException ex) {
+            Logger.getLogger(pane1.class.getName()).log(Level.SEVERE, null, ex);
+        
+        }
     }//GEN-LAST:event_jButton7ActionPerformed
 
     private void tablechitietsachMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_tablechitietsachMouseClicked
@@ -700,12 +739,19 @@ public class pane1 extends javax.swing.JPanel {
        if(row != -1){
            txt_serisach.setText(tablechitietsach.getValueAt(row, 0).toString());
            cb_masach.setSelectedItem(tablechitietsach.getValueAt(row, 1));
+           String tinhtrang=tablechitietsach.getValueAt(row, 2).toString();
+           if(tinhtrang.equals("Tot")){
+               txt_tinhtrangtot.setSelected(true);
+           }
+           else
+               txt_tinhtranghuhong.setSelected(true);
            
        }
     }//GEN-LAST:event_tablechitietsachMouseClicked
 
     private void jButton8ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton8ActionPerformed
         String masach=cb_masach.getSelectedItem().toString();
+        if(sctdt.KiemTRaXoaCuonSach(txt_serisach.getText())){
         if (JOptionPane.showConfirmDialog(null, "Are you sure?", "WARNING",
                 JOptionPane.YES_NO_OPTION) == JOptionPane.YES_OPTION) {
             String serisach = txt_serisach.getText();
@@ -722,6 +768,9 @@ public class pane1 extends javax.swing.JPanel {
         } else {
 
         }
+        }
+        else
+            JOptionPane.showMessageDialog(this, "Cuon Nay Dang duoc Muon Khong The Xoa");
        showsachchitiet();
     }//GEN-LAST:event_jButton8ActionPerformed
 
@@ -770,6 +819,10 @@ public class pane1 extends javax.swing.JPanel {
        txt_serisach.setText("");
       
     }//GEN-LAST:event_jButton10ActionPerformed
+
+    private void cb_tennxbActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_cb_tennxbActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_cb_tennxbActionPerformed
 
 
     // Variables declaration - do not modify//GEN-BEGIN:variables

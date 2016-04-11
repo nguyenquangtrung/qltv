@@ -6,6 +6,7 @@
 package DuLieu;
 
 import java.sql.CallableStatement;
+import java.sql.Date;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.logging.Level;
@@ -41,16 +42,29 @@ public class TraSachData {
         return rs;
     }
     //update ngay tra sach
-    public boolean UpdateTraSach(String maphieu,String ngaytra){
+    public boolean UpdateTraSach(Date ngaytra,String serisach){
         int result=0;
         try {
-            call=kn.getConnection().prepareCall("{call updatetrasach1(?)}");
-            call.setString(1, maphieu);
-           
+            call=kn.getConnection().prepareCall("{call updatetrasach6(?,?)}");
+            call.setDate(1, ngaytra);
+            call.setString(2, serisach);
             result=call.executeUpdate();
         } catch (SQLException ex) {
             Logger.getLogger(TraSachData.class.getName()).log(Level.SEVERE, null, ex);
         }
         return result>0;
+    }
+    //update lai so luong sach khi tra sach
+     public boolean updateSLSkhitrasach(String serisach){
+        int result = 0;
+
+        try {
+            call = kn.getConnection().prepareCall("{call updatesoluongsachkhitrasach(?)}");
+            call.setString(1, serisach);
+            result = call.executeUpdate();
+        } catch (SQLException ex) {
+            Logger.getLogger(SachChiTietData.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        return result > 0;
     }
 }

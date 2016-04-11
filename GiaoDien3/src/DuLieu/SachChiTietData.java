@@ -12,6 +12,7 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+import javax.swing.JOptionPane;
 
 /**
  *
@@ -116,8 +117,48 @@ public class SachChiTietData {
             call.setString(1, timkiem);
             rs = call.executeQuery();
         } catch (SQLException ex) {
+            
             Logger.getLogger(SachChiTietData.class.getName()).log(Level.SEVERE, null, ex);
         }
         return rs;
     }
+    //kiem tra xem co the xoa dc 1 cuon sach hay khong
+    public boolean KiemTRaXoaCuonSach(String sericuonsach){
+        try {
+            call=kn.getConnection().prepareCall("{call kiemtraxoa1cuonsach(?)}");
+            call.setString(1, sericuonsach);
+            rs=call.executeQuery();
+            if(rs.next())
+                return  false;
+        } catch (SQLException ex) {
+            Logger.getLogger(SachChiTietData.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        return true;
+    }
+   //ham xu li lay ra so luong sach tu mot ma sach nao do
+    public ResultSet layslsachsach(String masach){
+        try {
+            call = kn.getConnection().prepareCall("{call layslsach1(?)}");
+            call.setString(1, masach);
+            rs = call.executeQuery();
+        } catch (SQLException ex) {
+            Logger.getLogger(SachChiTietData.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        return rs;
+    }
+    //dem so seri sach tu mot ma sach nao do
+    public ResultSet demserisach(String masach){
+        try {
+            call = kn.getConnection().prepareCall("{call demserisach(?)}");
+            call.setString(1, masach);
+            rs = call.executeQuery();
+        } catch (SQLException ex) {
+            Logger.getLogger(SachChiTietData.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        return rs;
+    }
+    
+       
+    
+   
 }
